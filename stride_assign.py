@@ -25,7 +25,7 @@ canny_image = cv2.Canny(input_image_gray,50,150)
 
 contours, hierarchy = cv2.findContours(canny_image,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
 
-#Mark the largest are of interest
+#Mark the largest area of interest
 
 max_size_rect=0
 copy_input_img = input_image.copy()
@@ -76,7 +76,7 @@ for cnt in contours_roi:
         else:
             cv2.rectangle(mask, (x+3, y), (x+w-5, y+h), (255, 255, 255), -1)
 cv2.imwrite("mask.jpg", mask)
-
+#Use the mask to remove most of the lines 
 mask=cv2.cvtColor(mask,cv2.COLOR_BGR2GRAY)
 inverse_threshold=255-thresholded_roi
 
