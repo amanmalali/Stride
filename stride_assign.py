@@ -38,6 +38,7 @@ for cnt in contours:
 x, y, w, h = biggest_rectangle
 cv2.rectangle(copy_input_img, (x, y), (x+w, y+h), (255, 0, 0), 1)
 
+#Extract Region of interest from the original image
 
 roi = input_image[y:y+h, x:x+w]
 
@@ -46,6 +47,7 @@ cv2.imwrite("ROI.jpg", roi)
 
 
 roi_gray=cv2.cvtColor(roi,cv2.COLOR_BGR2GRAY)
+#Apply threshold to reduce noise
 
 for i in range(1,3):
     roi_gray=cv2.bilateralFilter(roi_gray,7,50,50)
@@ -53,6 +55,7 @@ thresholded_roi = cv2.adaptiveThreshold(roi_gray,255,cv2.ADAPTIVE_THRESH_GAUSSIA
 
 
 cv2.imwrite("threshold.jpg",thresholded_roi)
+#Erode the image so that text fields merge togeather
 
 kernel = np.ones((3,3), np.uint8)
 input_image_gray_dilation = cv2.erode(thresholded_roi, kernel, iterations=1)
@@ -76,6 +79,7 @@ for cnt in contours_roi:
         else:
             cv2.rectangle(mask, (x+3, y), (x+w-5, y+h), (255, 255, 255), -1)
 cv2.imwrite("mask.jpg", mask)
+
 #Use the mask to remove most of the lines 
 mask=cv2.cvtColor(mask,cv2.COLOR_BGR2GRAY)
 inverse_threshold=255-thresholded_roi
